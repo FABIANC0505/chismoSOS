@@ -1,11 +1,47 @@
-import React, { useState } from 'react';
-import { Heart, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Heart, Sparkles, CheckCircle2, ArrowRight, HeartOff } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function SelectionQuiz({ steps = [], onComplete }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showReaction, setShowReaction] = useState(false);
+
+  // Runaway "NO" button state
+  const [noOffset, setNoOffset] = useState({ x: 0, y: 0 });
+  const [dodgeCount, setDodgeCount] = useState(0);
+  const [noMessage, setNoMessage] = useState('');
+
+  const dodgeMessages = [
+    "¡Ups! El 'NO' se escapó 😜",
+    "¡Aquí no se vale decir que no! ❤️",
+    "¡Casi casi, pero no! 😂",
+    "¡Solo respuestas con amor y amistad! ✨",
+    "¡Ese botón no se deja atrapar! 🏃‍♂️💨",
+    "¡Inténtalo otra vez a ver! 🤭"
+  ];
+
+  useEffect(() => {
+    setNoOffset({ x: 0, y: 0 });
+    setNoMessage('');
+  }, [currentStepIndex]);
+
+  const handleNoDodge = () => {
+    const getRandomOffset = (min, max, current) => {
+      let delta = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (Math.random() > 0.5) delta = -delta;
+      if (Math.abs(delta - current) < 45) {
+        delta = delta > 0 ? delta + 55 : delta - 55;
+      }
+      return delta;
+    };
+
+    const newX = getRandomOffset(50, 160, noOffset.x);
+    const newY = getRandomOffset(30, 90, noOffset.y);
+    setNoOffset({ x: newX, y: newY });
+    setDodgeCount(prev => prev + 1);
+    setNoMessage(dodgeMessages[dodgeCount % dodgeMessages.length]);
+  };
 
   // Fallback if no steps are configured
   const currentStep = steps[currentStepIndex] || {
@@ -74,6 +110,41 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
             );
           })}
         </div>
+
+        {/* Runaway "NO" Button */}
+        {!showReaction && (
+          <div className="runaway-zone" id="runaway-no-zone">
+            <div className="runaway-track">
+              <button
+                type="button"
+                id="btn-runaway-no"
+                className="runaway-no-btn"
+                style={{
+                  transform: `translate(${noOffset.x}px, ${noOffset.y}px)`,
+                }}
+                onMouseEnter={handleNoDodge}
+                onMouseMove={handleNoDodge}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  handleNoDodge();
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNoDodge();
+                }}
+                title="¿Seguro que quieres decir que no? 😜"
+              >
+                <HeartOff size={16} className="heart-off-icon" />
+                <span>NO 💔</span>
+              </button>
+            </div>
+            {noMessage && (
+              <span className="runaway-tease-text animate-enter">
+                {noMessage}
+              </span>
+            )}
+          </div>
+        )}
 
         {showReaction && (
           <div className="reaction-box animate-enter" id="quiz-reaction-container">
@@ -256,6 +327,65 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
           max-width: 340px;
           padding: 0.9rem 1.8rem;
           font-size: 1.05rem;
+        }
+
+        /* Runaway NO button */
+        .runaway-zone {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin-top: 0.75rem;
+          min-height: 80px;
+          position: relative;
+          user-select: none;
+        }
+
+        .runaway-track {
+          position: relative;
+          display: inline-block;
+          padding: 8px;
+        }
+
+        .runaway-no-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(43, 8, 17, 0.65);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1.5px solid rgba(255, 107, 107, 0.4);
+          color: rgba(255, 190, 190, 0.85);
+          padding: 0.65rem 1.6rem;
+          border-radius: var(--radius-full);
+          font-family: var(--font-sans);
+          font-size: 0.92rem;
+          font-weight: 600;
+          cursor: not-allowed;
+          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
+          z-index: 20;
+        }
+
+        .runaway-no-btn:hover {
+          background: rgba(231, 76, 60, 0.25);
+          border-color: #ff6b6b;
+          color: #fff;
+        }
+
+        .heart-off-icon {
+          color: #ff7675;
+        }
+
+        .runaway-tease-text {
+          margin-top: 0.65rem;
+          font-size: 0.82rem;
+          color: var(--gold-300);
+          font-style: italic;
+          background: rgba(244, 209, 136, 0.12);
+          padding: 0.3rem 0.85rem;
+          border-radius: var(--radius-full);
+          border: 1px solid rgba(244, 209, 136, 0.25);
         }
       `}</style>
     </div>

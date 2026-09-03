@@ -186,41 +186,44 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
                   </p>
 
                   <div className="card-actions-bar">
-                    <button
-                      type="button"
-                      className="btn-gold btn-sm"
-                      onClick={() => onSelectExperience(exp.id)}
-                      title="Personalizar tarjetas y textos"
-                    >
-                      <Edit3 size={15} />
-                      <span>Editar</span>
-                    </button>
+                    <div className="card-buttons-main">
+                      <button
+                        type="button"
+                        className="btn-gold btn-sm action-btn"
+                        onClick={() => onSelectExperience(exp.id)}
+                        title="Personalizar tarjetas y textos"
+                      >
+                        <Edit3 size={14} />
+                        <span>Editar</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn-secondary btn-sm action-btn"
+                        onClick={() => onLivePreview(exp)}
+                        title="Ver como lo verá el destinatario"
+                      >
+                        <Eye size={14} />
+                        <span>Ver</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn-primary btn-sm action-btn"
+                        onClick={() => handleCopyLink(exp)}
+                        title="Copiar enlace para enviar por WhatsApp"
+                      >
+                        {isCopied ? <Check size={14} /> : <Share2 size={14} />}
+                        <span>{isCopied ? '¡Copiado!' : 'Compartir'}</span>
+                      </button>
+                    </div>
 
                     <button
                       type="button"
-                      className="btn-secondary btn-sm"
-                      onClick={() => onLivePreview(exp)}
-                      title="Ver como lo verá el destinatario"
-                    >
-                      <Eye size={15} />
-                      <span>Ver</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="btn-primary btn-sm"
-                      onClick={() => handleCopyLink(exp)}
-                      title="Copiar enlace para enviar por WhatsApp"
-                    >
-                      {isCopied ? <Check size={15} /> : <Share2 size={15} />}
-                      <span>{isCopied ? '¡Copiado!' : 'Compartir'}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="icon-btn text-danger"
+                      className="icon-btn text-danger action-delete-btn"
                       onClick={() => handleDelete(exp.id)}
                       title="Eliminar carta"
+                      aria-label="Eliminar carta"
                     >
                       <Trash2 size={15} />
                     </button>
@@ -447,12 +450,19 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         .experiences-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-          gap: 1.5rem;
+          gap: 1.75rem;
+          width: 100%;
+        }
+
+        @media (max-width: 480px) {
+          .experiences-grid {
+            grid-template-columns: 1fr;
+          }
         }
 
         .experience-card {
           border-radius: var(--radius-md);
-          padding: 1.75rem;
+          padding: 1.5rem;
           display: flex;
           flex-direction: column;
           gap: 1rem;
@@ -462,6 +472,9 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           border: 1.5px solid var(--glass-border);
           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.28);
           transition: var(--transition-smooth);
+          overflow: hidden;
+          box-sizing: border-box;
+          width: 100%;
         }
 
         .experience-card:hover {
@@ -523,11 +536,46 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
 
         .card-actions-bar {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 0.5rem;
+          justify-content: space-between;
+          gap: 0.6rem;
           margin-top: auto;
           padding-top: 1rem;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .card-buttons-main {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 0.45rem;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .action-btn {
+          padding: 0.42rem 0.75rem !important;
+          font-size: 0.8rem !important;
+          gap: 0.3rem !important;
+          white-space: nowrap;
+          border-radius: var(--radius-full);
+        }
+
+        .action-delete-btn {
+          flex-shrink: 0;
+          margin-left: auto;
+          border-radius: var(--radius-sm);
+          background: rgba(231, 76, 60, 0.12);
+          border: 1.2px solid rgba(231, 76, 60, 0.35);
+        }
+
+        .action-delete-btn:hover {
+          background: rgba(231, 76, 60, 0.3) !important;
+          border-color: #ff6b6b;
+          transform: scale(1.08);
         }
 
         .empty-state {

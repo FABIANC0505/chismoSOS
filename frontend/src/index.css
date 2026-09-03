@@ -200,6 +200,12 @@ h1, h2, h3, .font-serif {
   background: linear-gradient(135deg, var(--gold-300), var(--gold-400));
 }
 
+.btn-sm {
+  padding: 0.42rem 0.82rem !important;
+  font-size: 0.82rem !important;
+  gap: 0.35rem !important;
+}
+
 /* Form Inputs */
 .form-group {
   margin-bottom: 1.25rem;
