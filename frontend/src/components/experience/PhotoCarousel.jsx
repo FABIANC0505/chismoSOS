@@ -260,10 +260,13 @@ export default function PhotoCarousel({ experience, onReplay }) {
           display: flex;
           align-items: center;
           gap: 1.5rem;
-          background: rgba(255, 255, 255, 0.05);
-          padding: 0.5rem 1.25rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(255, 255, 255, 0.04);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          padding: 0.55rem 1.4rem;
           border-radius: var(--radius-full);
-          border: 1px solid var(--glass-border);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: inset 0 1.2px 1.2px rgba(255, 255, 255, 0.3), 0 6px 18px rgba(0, 0, 0, 0.3);
         }
 
         .progress-text {
@@ -301,12 +304,18 @@ export default function PhotoCarousel({ experience, onReplay }) {
 
         .carousel-card {
           border-radius: var(--radius-lg);
-          border: 1.5px solid rgba(244, 209, 136, 0.25);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 2px solid rgba(244, 209, 136, 0.38);
           overflow: hidden;
           display: grid;
           grid-template-columns: 1.15fr 1fr;
           min-height: 480px;
-          box-shadow: 0 25px 60px -15px rgba(26, 5, 9, 0.85);
+          box-shadow: 
+            0 25px 65px -10px rgba(18, 2, 6, 0.9), 
+            inset 0 2px 2.5px rgba(255, 255, 255, 0.35), 
+            inset 0 -1.5px 2px rgba(0, 0, 0, 0.35);
           transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
@@ -451,16 +460,17 @@ export default function PhotoCarousel({ experience, onReplay }) {
           width: 52px;
           height: 52px;
           border-radius: 50%;
-          background: rgba(43, 8, 17, 0.85);
-          border: 1.5px solid var(--glass-border);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%), rgba(43, 8, 17, 0.88);
+          border: 1.5px solid var(--glass-border-strong);
           color: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          backdrop-filter: blur(12px);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           transition: var(--transition-smooth);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1.2px 1.5px rgba(255, 255, 255, 0.35);
           z-index: 10;
         }
 
@@ -468,7 +478,7 @@ export default function PhotoCarousel({ experience, onReplay }) {
           background: var(--ruby-500);
           border-color: var(--gold-300);
           transform: translateY(-50%) scale(1.1);
-          box-shadow: var(--shadow-glow);
+          box-shadow: var(--shadow-glow), inset 0 1.5px 2px rgba(255, 255, 255, 0.5);
         }
 
         .nav-control:disabled {
@@ -507,8 +517,11 @@ export default function PhotoCarousel({ experience, onReplay }) {
           flex-direction: column;
           align-items: center;
           gap: 1.25rem;
-          border: 1.5px solid var(--gold-400);
-          box-shadow: var(--shadow-gold-glow);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 2px solid var(--gold-400);
+          box-shadow: var(--shadow-gold-glow), 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 2px 2.5px rgba(255, 255, 255, 0.38);
         }
 
         .celebration-title {

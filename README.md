@@ -1,4 +1,4 @@
-# chismoSOS — Carta Interactiva de Amor y Amistad (14 de Septiembre)
+# chismOSOS — Carta Interactiva de Amor y Amistad (14 de Septiembre)
 
 Proyecto enfocado para detalles únicos de **Amor y Amistad** (celebrado el 14 de septiembre en Colombia) y fechas especiales como aniversarios y cumpleaños. Combina un sobre interactivo con sello de cera virtual, cuadros de preguntas con opciones cariñosas, un carrusel de recuerdos fotográficos y dedicatorias de hasta 250 palabras, con un panel de personalización protegido por usuario y contraseña.
 

@@ -10,7 +10,7 @@ client = TestClient(app)
 def test_health():
     res = client.get("/")
     assert res.status_code == 200
-    assert "chismoSOS" in res.json()["message"]
+    assert "chismOSOS" in res.json()["message"]
     print("[OK] Health check OK")
 
 def test_auth_and_experience_flow():

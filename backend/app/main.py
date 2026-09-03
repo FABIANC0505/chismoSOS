@@ -10,7 +10,7 @@ from app.controllers import auth_router, experience_router, card_router, selecti
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="chismoSOS API",
+    title="chismOSOS API",
     description="Backend para la experiencia interactiva del Día del Amor y la Amistad",
     version="1.0.0"
 )
@@ -37,6 +37,6 @@ app.include_router(selection_router)
 def health_check():
     return {
         "status": "online",
-        "message": "chismoSOS API - Detalle de Amor y Amistad listo para enviar sonrisas ❤️✨",
+        "message": "chismOSOS API - Detalle de Amor y Amistad listo para enviar sonrisas ❤️✨",
         "celebration_date": "14 de Septiembre - Colombia"
     }

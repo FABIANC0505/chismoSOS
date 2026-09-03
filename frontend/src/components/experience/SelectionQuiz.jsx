@@ -115,7 +115,11 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
           display: flex;
           flex-direction: column;
           gap: 2rem;
-          border: 1px solid rgba(244, 209, 136, 0.25);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 2px solid rgba(244, 209, 136, 0.38);
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 2px 2.5px rgba(255, 255, 255, 0.35);
         }
 
         .quiz-header {
@@ -131,7 +135,8 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
           gap: 0.4rem;
           background: rgba(255, 77, 109, 0.15);
           color: var(--rose-200);
-          border: 1px solid rgba(255, 77, 109, 0.3);
+          border: 1.5px solid rgba(255, 77, 109, 0.35);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25);
           padding: 0.35rem 0.9rem;
           border-radius: var(--radius-full);
           font-size: 0.8rem;
@@ -162,8 +167,11 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
           display: flex;
           align-items: center;
           gap: 1rem;
-          background: rgba(255, 255, 255, 0.05);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           border: 1.5px solid var(--glass-border);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1.2px 1.5px rgba(255, 255, 255, 0.22);
           border-radius: var(--radius-md);
           padding: 1.1rem 1.4rem;
           color: #fff;
@@ -176,16 +184,16 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
         }
 
         .option-btn:hover {
-          background: rgba(255, 77, 109, 0.15);
+          background: linear-gradient(135deg, rgba(255, 77, 109, 0.22) 0%, rgba(201, 24, 74, 0.15) 100%);
           border-color: var(--ruby-400);
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(255, 77, 109, 0.25);
+          box-shadow: 0 12px 28px rgba(255, 77, 109, 0.35), inset 0 1.5px 2px rgba(255, 255, 255, 0.4);
         }
 
         .option-btn.option-selected {
-          background: linear-gradient(135deg, rgba(201, 24, 74, 0.3), rgba(244, 209, 136, 0.15));
+          background: linear-gradient(135deg, rgba(201, 24, 74, 0.35), rgba(244, 209, 136, 0.2));
           border-color: var(--gold-300);
-          box-shadow: 0 0 25px rgba(244, 209, 136, 0.3);
+          box-shadow: 0 0 30px rgba(244, 209, 136, 0.35), inset 0 1.5px 2px rgba(255, 255, 255, 0.5);
         }
 
         .option-indicator {
@@ -193,6 +201,7 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
           height: 36px;
           border-radius: 50%;
           background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -217,7 +226,7 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
         .reaction-box {
           margin-top: 1rem;
           padding-top: 1.5rem;
-          border-top: 1px dashed rgba(255, 255, 255, 0.12);
+          border-top: 1px dashed rgba(255, 255, 255, 0.15);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -225,8 +234,11 @@ export default function SelectionQuiz({ steps = [], onComplete }) {
         }
 
         .reaction-content {
-          background: rgba(244, 209, 136, 0.08);
-          border: 1px solid rgba(244, 209, 136, 0.25);
+          background: linear-gradient(135deg, rgba(244, 209, 136, 0.14) 0%, rgba(244, 209, 136, 0.04) 100%);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1.5px solid rgba(244, 209, 136, 0.38);
+          box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(0, 0, 0, 0.25);
           border-radius: var(--radius-md);
           padding: 1rem 1.4rem;
           width: 100%;

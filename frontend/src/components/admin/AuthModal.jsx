@@ -39,7 +39,7 @@ export default function AuthModal({ onLoginSuccess, onClose }) {
             <Heart size={32} fill="#ff4d6d" color="#ff4d6d" />
           </div>
           <h2 className="auth-title font-serif">
-            {isRegister ? 'Crear Cuenta en chismoSOS' : 'Iniciar Sesión'}
+            {isRegister ? 'Crear Cuenta en chismOSOS' : 'Iniciar Sesión'}
           </h2>
           <p className="auth-subtitle">
             {isRegister 
@@ -140,8 +140,11 @@ export default function AuthModal({ onLoginSuccess, onClose }) {
           max-width: 440px;
           border-radius: var(--radius-lg);
           padding: 2.5rem 2rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(35, 8, 14, 0.88);
+          backdrop-filter: blur(28px) saturate(170%);
+          -webkit-backdrop-filter: blur(28px) saturate(170%);
           border: 1.5px solid var(--glass-border);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1.5px 2px rgba(255, 255, 255, 0.35);
         }
 
         .auth-header {

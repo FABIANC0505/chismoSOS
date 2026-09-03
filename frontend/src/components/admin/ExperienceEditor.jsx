@@ -414,7 +414,11 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
           padding: 1rem 1.5rem;
           border-radius: var(--radius-lg);
           margin-bottom: 2rem;
-          border: 1px solid var(--glass-border);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.32);
         }
 
         .navbar-left {
@@ -456,7 +460,11 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
         .settings-panel, .cards-panel {
           border-radius: var(--radius-lg);
           padding: 2rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
           border: 1.5px solid var(--glass-border);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.3);
         }
 
         .panel-header {
@@ -539,8 +547,13 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 1rem;
+          padding: 1.1rem 1.25rem;
           border-radius: var(--radius-sm);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(255, 255, 255, 0.04);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25), inset 0 1px 1.2px rgba(255, 255, 255, 0.25);
         }
 
         .step-num {
@@ -570,7 +583,8 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
 
         .icon-action-btn, .icon-btn {
           background: rgba(255, 255, 255, 0.08);
-          border: 1px solid var(--glass-border);
+          border: 1.2px solid rgba(255, 255, 255, 0.2);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
           color: #fff;
           width: 34px;
           height: 34px;
@@ -584,6 +598,7 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
 
         .icon-btn:hover, .icon-action-btn:hover {
           background: rgba(255, 255, 255, 0.2);
+          border-color: var(--glass-border-highlight);
           transform: translateY(-1px);
         }
 
@@ -608,6 +623,18 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
           align-items: center;
           padding: 1rem 1.25rem;
           border-radius: var(--radius-md);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(255, 255, 255, 0.04);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3), inset 0 1.2px 1.2px rgba(255, 255, 255, 0.26);
+          transition: var(--transition-smooth);
+        }
+
+        .card-manage-item:hover {
+          border-color: var(--glass-border-highlight);
+          transform: translateY(-2px);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 77, 109, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
         }
 
         @media (max-width: 600px) {

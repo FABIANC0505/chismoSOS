@@ -1,4 +1,4 @@
-# Recorrido de Implementación: chismoSOS
+# Recorrido de Implementación: chismOSOS
 
 Plataforma interactiva del **Día del Amor y la Amistad** (14 de Septiembre - Colombia) construida con una arquitectura **MVC ordenada en el backend (Python/FastAPI/SQLAlchemy)** y una experiencia de usuario en **React** con estética festiva y elegante (tonos vino tinto aterciopelado, rosas empolvados, acentos dorados champán y caída suave de pétalos).
 

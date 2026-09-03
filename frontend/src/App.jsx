@@ -146,7 +146,7 @@ export default function App() {
           <nav className="landing-nav glass-panel">
             <div className="nav-brand">
               <Heart size={26} fill="#ff4d6d" color="#ff4d6d" />
-              <span className="brand-title font-serif">chismoSOS</span>
+              <span className="brand-title font-serif">chismOSOS</span>
             </div>
 
             <div className="nav-actions">
@@ -273,7 +273,11 @@ export default function App() {
           justify-content: space-between;
           padding: 0.9rem 1.75rem;
           border-radius: var(--radius-full);
-          border: 1px solid var(--glass-border);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%), rgba(35, 8, 14, 0.75);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35);
           margin-bottom: 3.5rem;
         }
 
@@ -311,7 +315,8 @@ export default function App() {
           align-items: center;
           gap: 0.5rem;
           background: rgba(244, 209, 136, 0.12);
-          border: 1px solid rgba(244, 209, 136, 0.35);
+          border: 1.5px solid rgba(244, 209, 136, 0.4);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.3);
           color: var(--gold-300);
           padding: 0.45rem 1.2rem;
           border-radius: var(--radius-full);
@@ -375,7 +380,18 @@ export default function App() {
           display: flex;
           flex-direction: column;
           gap: 1rem;
-          border: 1px solid var(--glass-border);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(43, 8, 17, 0.55);
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.28);
+          transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+          border-color: var(--glass-border-highlight);
+          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), 0 0 25px rgba(255, 77, 109, 0.3), inset 0 1.5px 2px rgba(255, 255, 255, 0.45);
+          transform: translateY(-4px);
         }
 
         .feature-icon-wrap {

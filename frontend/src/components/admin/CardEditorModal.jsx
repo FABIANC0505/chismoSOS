@@ -224,7 +224,11 @@ export default function CardEditorModal({ experienceId, card, onSave, onClose })
           max-width: 620px;
           border-radius: var(--radius-lg);
           padding: 2.25rem 2rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(26, 5, 9, 0.92);
+          backdrop-filter: blur(28px) saturate(170%);
+          -webkit-backdrop-filter: blur(28px) saturate(170%);
           border: 1.5px solid var(--glass-border);
+          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), inset 0 1.5px 2px rgba(255, 255, 255, 0.35);
           max-height: 90vh;
           overflow-y: auto;
         }

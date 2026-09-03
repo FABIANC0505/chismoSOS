@@ -95,10 +95,16 @@ export default function EnvelopeIntro({ experience, onOpen }) {
           width: 100%;
           max-width: 540px;
           min-height: 380px;
-          background: linear-gradient(145deg, #3c0c17, #26050b);
-          border: 2px solid rgba(244, 209, 136, 0.35);
-          border-radius: 18px;
-          box-shadow: 0 25px 60px -10px rgba(15, 2, 4, 0.85), 0 0 35px rgba(201, 24, 74, 0.25);
+          background: linear-gradient(145deg, rgba(60, 12, 23, 0.88), rgba(26, 5, 10, 0.94));
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 2px solid rgba(244, 209, 136, 0.45);
+          border-radius: 20px;
+          box-shadow: 
+            0 30px 70px -10px rgba(15, 2, 4, 0.9), 
+            0 0 40px rgba(201, 24, 74, 0.3), 
+            inset 0 2px 2.5px rgba(255, 255, 255, 0.35),
+            inset 0 -2px 3px rgba(0, 0, 0, 0.35);
           padding: 2.5rem 2rem;
           transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
           overflow: hidden;
@@ -113,8 +119,8 @@ export default function EnvelopeIntro({ experience, onOpen }) {
           content: '';
           position: absolute;
           inset: 8px;
-          border: 1px dashed rgba(255, 204, 213, 0.2);
-          border-radius: 12px;
+          border: 1px dashed rgba(255, 204, 213, 0.25);
+          border-radius: 14px;
           pointer-events: none;
         }
 
@@ -131,7 +137,7 @@ export default function EnvelopeIntro({ experience, onOpen }) {
           align-items: center;
           justify-content: space-between;
           width: 100%;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
           padding-bottom: 1.25rem;
         }
 
@@ -139,11 +145,13 @@ export default function EnvelopeIntro({ experience, onOpen }) {
           width: 58px;
           height: 68px;
           border: 2px dashed var(--gold-400);
-          background: rgba(223, 177, 91, 0.08);
+          background: rgba(223, 177, 91, 0.12);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 4px;
+          border-radius: 6px;
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .stamp-inner {
@@ -179,15 +187,19 @@ export default function EnvelopeIntro({ experience, onOpen }) {
         }
 
         .envelope-note-preview {
-          background: rgba(255, 255, 255, 0.04);
-          border-radius: 12px;
-          padding: 1.2rem 1.5rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1.5px solid var(--glass-border);
+          border-radius: 14px;
+          padding: 1.2rem 1.6rem;
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.1rem;
           color: var(--rose-100);
           max-width: 440px;
           line-height: 1.5;
+          box-shadow: inset 0 1.2px 1.5px rgba(255, 255, 255, 0.25), 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .wax-seal-container {

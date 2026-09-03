@@ -89,7 +89,7 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         <div className="brand-badge">
           <Heart size={24} fill="#ff4d6d" color="#ff4d6d" />
           <div>
-            <h1 className="brand-name font-serif">chismoSOS</h1>
+            <h1 className="brand-name font-serif">chismOSOS</h1>
             <span className="brand-tag">Amor y Amistad 2026</span>
           </div>
         </div>
@@ -342,7 +342,11 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           padding: 1rem 1.75rem;
           border-radius: var(--radius-lg);
           margin-bottom: 2.5rem;
-          border: 1px solid var(--glass-border);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          backdrop-filter: blur(24px) saturate(160%);
+          -webkit-backdrop-filter: blur(24px) saturate(160%);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.32);
         }
 
         .brand-badge {
@@ -382,11 +386,13 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           justify-content: space-between;
           gap: 2rem;
           margin-bottom: 3rem;
-          background: linear-gradient(135deg, rgba(66, 13, 26, 0.6), rgba(35, 8, 14, 0.4));
-          border: 1px solid rgba(244, 209, 136, 0.25);
+          background: linear-gradient(135deg, rgba(86, 17, 33, 0.65) 0%, rgba(35, 8, 14, 0.5) 100%);
+          backdrop-filter: blur(22px) saturate(160%);
+          -webkit-backdrop-filter: blur(22px) saturate(160%);
+          border: 1.5px solid rgba(244, 209, 136, 0.35);
           padding: 2.5rem;
           border-radius: var(--radius-lg);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1.5px 2px rgba(255, 255, 255, 0.28);
         }
 
         @media (max-width: 768px) {
@@ -401,7 +407,8 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           align-items: center;
           gap: 0.4rem;
           background: rgba(244, 209, 136, 0.12);
-          border: 1px solid rgba(244, 209, 136, 0.3);
+          border: 1.5px solid rgba(244, 209, 136, 0.4);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
           color: var(--gold-300);
           padding: 0.35rem 0.85rem;
           border-radius: var(--radius-full);
@@ -449,14 +456,18 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           display: flex;
           flex-direction: column;
           gap: 1rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(43, 8, 17, 0.65);
+          backdrop-filter: blur(20px) saturate(150%);
+          -webkit-backdrop-filter: blur(20px) saturate(150%);
           border: 1.5px solid var(--glass-border);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.28);
           transition: var(--transition-smooth);
         }
 
         .experience-card:hover {
-          border-color: var(--gold-400);
-          transform: translateY(-3px);
-          box-shadow: 0 15px 35px rgba(201, 24, 74, 0.25);
+          border-color: var(--glass-border-highlight);
+          transform: translateY(-4px);
+          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 77, 109, 0.3), inset 0 1.5px 2px rgba(255, 255, 255, 0.42);
         }
 
         .card-top {
@@ -486,8 +497,9 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         }
 
         .stat-pill {
-          background: rgba(255, 255, 255, 0.07);
-          border: 1px solid var(--glass-border);
+          background: rgba(255, 255, 255, 0.08);
+          border: 1.2px solid rgba(255, 255, 255, 0.22);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
           padding: 0.25rem 0.65rem;
           border-radius: var(--radius-full);
           font-size: 0.8rem;
@@ -503,6 +515,10 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          background: rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 0.65rem 0.9rem;
+          border-radius: var(--radius-sm);
         }
 
         .card-actions-bar {
@@ -511,7 +527,7 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           gap: 0.5rem;
           margin-top: auto;
           padding-top: 1rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .empty-state {
@@ -522,6 +538,9 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           flex-direction: column;
           align-items: center;
           gap: 1.25rem;
+          border: 1.5px solid var(--glass-border);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
+          box-shadow: inset 0 1.5px 1.5px rgba(255, 255, 255, 0.3);
         }
 
         .empty-title {
@@ -551,7 +570,11 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           max-width: 540px;
           border-radius: var(--radius-lg);
           padding: 2.25rem 2rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(26, 5, 9, 0.88);
+          backdrop-filter: blur(26px) saturate(170%);
+          -webkit-backdrop-filter: blur(26px) saturate(170%);
           border: 1.5px solid var(--glass-border);
+          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), inset 0 1.5px 2px rgba(255, 255, 255, 0.35);
         }
 
         .modal-header {
