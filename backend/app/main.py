@@ -9,6 +9,22 @@ from app.controllers import auth_router, experience_router, card_router, selecti
 # Initialize Database tables
 Base.metadata.create_all(bind=engine)
 
+def auto_migrate_db():
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        try:
+            conn.execute(text("ALTER TABLE experiences ADD COLUMN hug_count INTEGER DEFAULT 0"))
+            conn.commit()
+        except Exception:
+            pass
+        try:
+            conn.execute(text("ALTER TABLE experiences ADD COLUMN last_hug_at DATETIME"))
+            conn.commit()
+        except Exception:
+            pass
+
+auto_migrate_db()
+
 app = FastAPI(
     title="chismOSOS API",
     description="Backend para la experiencia interactiva del Día del Amor y la Amistad",

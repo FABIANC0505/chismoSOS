@@ -54,10 +54,11 @@ export default function PhotoCarousel({ experience, onReplay }) {
       colors: ['#ff4d6d', '#ff758f', '#c9184a', '#f4d188', '#ffffff']
     });
 
-    if (experience.slug) {
+    const targetSlug = experience?.slug || new URLSearchParams(window.location.search).get('slug');
+    if (targetSlug) {
       try {
-        const res = await api.sendHug(experience.slug);
-        if (res && res.hug_count) {
+        const res = await api.sendHug(targetSlug);
+        if (res && res.hug_count !== undefined) {
           setHeartCount(res.hug_count);
         }
       } catch (err) {

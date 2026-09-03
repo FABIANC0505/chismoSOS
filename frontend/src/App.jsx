@@ -5,7 +5,8 @@ import ExperienceViewer from './components/experience/ExperienceViewer';
 import CreatorDashboard from './components/admin/CreatorDashboard';
 import ExperienceEditor from './components/admin/ExperienceEditor';
 import AuthModal from './components/admin/AuthModal';
-import { Heart, Sparkles, Send, Play, Lock, ShieldCheck, ChevronRight, Gift } from 'lucide-react';
+import RetractableFooter from './components/RetractableFooter';
+import { Heart, Sparkles, Send, Play, Lock, ShieldCheck, ChevronRight, Gift, LogOut } from 'lucide-react';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(api.getCurrentUser());
@@ -150,25 +151,51 @@ export default function App() {
             </div>
 
             <div className="nav-actions">
-              <button
-                type="button"
-                className="btn-secondary btn-sm"
-                onClick={handleStartDemo}
-                id="btn-demo-experience"
-              >
-                <Play size={14} fill="#fff" />
-                <span>Ver Carta Demo</span>
-              </button>
+              {currentUser ? (
+                <>
+                  <button
+                    type="button"
+                    className="btn-primary btn-sm"
+                    onClick={() => setActiveView('dashboard')}
+                    id="btn-go-dashboard"
+                  >
+                    <Gift size={14} />
+                    <span>Ir a Mi Panel de Cartas</span>
+                  </button>
 
-              <button
-                type="button"
-                className="btn-primary btn-sm"
-                onClick={() => setIsAuthOpen(true)}
-                id="btn-login-open"
-              >
-                <Lock size={14} />
-                <span>Ingresar / Registrarse</span>
-              </button>
+                  <button
+                    type="button"
+                    className="btn-secondary btn-sm"
+                    onClick={handleLogout}
+                    id="btn-logout-landing"
+                  >
+                    <LogOut size={14} />
+                    <span>Cerrar Sesión</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="btn-secondary btn-sm"
+                    onClick={handleStartDemo}
+                    id="btn-demo-experience"
+                  >
+                    <Play size={14} fill="#fff" />
+                    <span>Ver Carta Demo</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn-primary btn-sm"
+                    onClick={() => setIsAuthOpen(true)}
+                    id="btn-login-open"
+                  >
+                    <Lock size={14} />
+                    <span>Ingresar / Registrarse</span>
+                  </button>
+                </>
+              )}
             </div>
           </nav>
 
@@ -252,6 +279,9 @@ export default function App() {
           onClose={() => setIsAuthOpen(false)}
         />
       )}
+
+      {/* Retractable Footer Exclusivamente en Pantalla de Bienvenida */}
+      {activeView === 'landing' && <RetractableFooter />}
 
       <style>{`
         .app-root {

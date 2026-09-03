@@ -19,20 +19,24 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
   const [newNote, setNewNote] = useState('Tienes una carta especial de Amor y Amistad esperando por ti...');
   const [createError, setCreateError] = useState(null);
 
-  const fetchExperiences = async () => {
+  const fetchExperiences = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const list = await api.getMyExperiences();
       setExperiences(list);
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchExperiences();
+    const interval = setInterval(() => {
+      fetchExperiences(true);
+    }, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleCreate = async (e) => {
