@@ -13,9 +13,12 @@ def test_health():
     assert "chismOSOS" in res.json()["message"]
     print("[OK] Health check OK")
 
+import uuid
+
 def test_auth_and_experience_flow():
-    # 1. Register
-    reg_data = {"username": "cupido_test", "password": "password123"}
+    # 1. Register with unique test username
+    unique_user = f"cupido_{uuid.uuid4().hex[:6]}"
+    reg_data = {"username": unique_user, "password": "password123"}
     res = client.post("/api/auth/register", json=reg_data)
     assert res.status_code == 201
     token = res.json()["access_token"]

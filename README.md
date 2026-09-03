@@ -47,3 +47,16 @@ npm run dev
    - Registro e inicio de sesión seguro con usuario y contraseña (hash `bcrypt`).
    - Carga de imágenes locales desde el dispositivo o URLs externas.
    - Generación de enlace único compartible (`/?slug=...`) para enviar directamente por WhatsApp.
+
+---
+
+## 🚀 Despliegue en Producción (Vercel + Render + Cloudflare R2)
+
+El proyecto está 100% preparado para producción con arquitectura en la nube:
+- **Frontend**: Desplegable en [Vercel](https://vercel.com) (configurado con `frontend/vercel.json`).
+- **Backend**: Desplegable en [Render](https://render.com) (configurado con `backend/render.yaml`).
+- **Almacenamiento de Fotos**: Integrado con [Cloudflare R2](https://www.cloudflare.com/products/r2/) con API compatible con S3 y sin costos de transferencia de salida.
+
+Para ver las instrucciones detalladas paso a paso, consulta:
+👉 **[Guía Completa de Despliegue (deploy_guide.md)](./deploy_guide.md)**
+

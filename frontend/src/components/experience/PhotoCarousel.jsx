@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Heart, Sparkles, RefreshCw, ZoomIn, X, Share2, Award } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { getAssetUrl } from '../../services/api';
 
 export default function PhotoCarousel({ experience, onReplay }) {
   const cards = experience.cards || [];
@@ -92,9 +93,9 @@ export default function PhotoCarousel({ experience, onReplay }) {
           {/* Card Image Area */}
           <div className="card-media-wrap">
             {currentCard.image_url ? (
-              <div className="image-frame" onClick={() => setZoomedImage(currentCard.image_url)} role="button" tabIndex={0}>
+              <div className="image-frame" onClick={() => setZoomedImage(getAssetUrl(currentCard.image_url))} role="button" tabIndex={0}>
                 <img
-                  src={currentCard.image_url}
+                  src={getAssetUrl(currentCard.image_url)}
                   alt={currentCard.title || "Fotografía de Amor y Amistad"}
                   className="card-image"
                   loading="lazy"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api } from '../../services/api';
+import { api, getAssetUrl } from '../../services/api';
 import { Upload, Image as ImageIcon, AlertTriangle, Check, X, Loader2 } from 'lucide-react';
 
 const MAX_WORDS = 250;
@@ -150,7 +150,7 @@ export default function CardEditorModal({ experienceId, card, onSave, onClose })
               <div className="image-preview-box">
                 {imageUrl ? (
                   <div className="preview-wrap">
-                    <img src={imageUrl} alt="Vista previa" className="preview-img" />
+                    <img src={getAssetUrl(imageUrl)} alt="Vista previa" className="preview-img" />
                     <button
                       type="button"
                       className="remove-img-btn"

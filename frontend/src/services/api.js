@@ -1,4 +1,19 @@
-const API_BASE = '/api';
+const RAW_API_URL = import.meta.env.VITE_API_URL || '';
+export const BACKEND_BASE = RAW_API_URL.replace(/\/$/, '');
+export const API_BASE = BACKEND_BASE ? `${BACKEND_BASE}/api` : '/api';
+
+/**
+ * Resuelve la URL completa de una imagen o recurso.
+ * - Si es una URL absoluta (Cloudflare R2, Unsplash), la retorna tal cual.
+ * - Si es una ruta relativa local (/uploads/...), le antepone la base del backend en producción.
+ */
+export function getAssetUrl(path) {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
+  }
+  return `${BACKEND_BASE}${path.startsWith('/') ? '' : '/'}${path}`;
+}
 
 function getHeaders(isJson = true) {
   const token = localStorage.getItem('chismoSOS_token');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../services/api';
+import { api, getAssetUrl } from '../../services/api';
 import CardEditorModal from './CardEditorModal';
 import StepEditorModal from './StepEditorModal';
 import { 
@@ -317,7 +317,7 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
                 <div key={c.id} className="card-manage-item glass-card">
                   <div className="card-item-media">
                     {c.image_url ? (
-                      <img src={c.image_url} alt={c.title} className="thumb-img" />
+                      <img src={getAssetUrl(c.image_url)} alt={c.title} className="thumb-img" />
                     ) : (
                       <div className="thumb-placeholder">
                         <Heart size={24} className="text-gold" />
