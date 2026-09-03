@@ -24,6 +24,8 @@ def serialize_experience(exp: Experience) -> ExperienceResponse:
         envelope_note=exp.envelope_note,
         music_url=exp.music_url,
         is_active=exp.is_active,
+        hug_count=exp.hug_count or 0,
+        last_hug_at=exp.last_hug_at,
         created_at=exp.created_at,
         updated_at=exp.updated_at,
         selection_steps=exp.selection_steps,
@@ -178,6 +180,33 @@ def get_public_experience(slug: str, db: Session = Depends(get_db)):
         sender_name=exp.sender_name,
         envelope_note=exp.envelope_note,
         music_url=exp.music_url,
+        hug_count=exp.hug_count or 0,
+        last_hug_at=exp.last_hug_at,
         selection_steps=steps_sorted,
         cards=cards_response
     )
+
+@router.post("/api/public/experience/{slug}/hug")
+def return_hug(slug: str, db: Session = Depends(get_db)):
+    from datetime import datetime
+    exp = db.query(Experience).filter(
+        Experience.slug == slug,
+        Experience.is_active == True
+    ).first()
+    if not exp:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Experiencia no encontrada."
+        )
+
+    exp.hug_count = (exp.hug_count or 0) + 1
+    exp.last_hug_at = datetime.utcnow()
+    db.commit()
+    db.refresh(exp)
+
+    return {
+        "message": "¡Abrazo enviado de vuelta con éxito! Notificación entregada.",
+        "hug_count": exp.hug_count,
+        "recipient_name": exp.recipient_name,
+        "sender_name": exp.sender_name
+    }

@@ -43,7 +43,7 @@ export default function App() {
   const demoExperience = {
     title: "Nuestra Historia de Amor y Amistad",
     recipient_name: "Valentina",
-    sender_name: "Carlos",
+    sender_name: "Valentino",
     envelope_note: "Para la persona que ilumina mis días con su sonrisa...",
     selection_steps: [
       {

@@ -21,6 +21,8 @@ class Experience(Base):
     envelope_note = Column(String(200), default="Tienes una carta especial de Amor y Amistad esperando por ti...")
     music_url = Column(String(255), nullable=True)
     is_active = Column(Boolean, default=True)
+    hug_count = Column(Integer, default=0, nullable=False)
+    last_hug_at = Column(DateTime, nullable=True)
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

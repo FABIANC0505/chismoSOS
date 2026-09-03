@@ -8,7 +8,7 @@ class Card(Base):
     id = Column(Integer, primary_key=True, index=True)
     experience_id = Column(Integer, ForeignKey("experiences.id", ondelete="CASCADE"), nullable=False)
     
-    image_url = Column(String(500), nullable=True)
+    image_url = Column(Text, nullable=True)
     title = Column(String(120), nullable=True, default="Un momento inolvidable")
     text_content = Column(Text, nullable=False)
     order_index = Column(Integer, default=0)

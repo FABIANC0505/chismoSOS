@@ -29,6 +29,8 @@ class ExperienceResponse(BaseModel):
     envelope_note: Optional[str]
     music_url: Optional[str]
     is_active: bool
+    hug_count: int = 0
+    last_hug_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
     selection_steps: List[SelectionStepResponse] = []
@@ -45,6 +47,8 @@ class PublicExperienceView(BaseModel):
     sender_name: str
     envelope_note: Optional[str]
     music_url: Optional[str]
+    hug_count: int = 0
+    last_hug_at: Optional[datetime] = None
     selection_steps: List[SelectionStepResponse] = []
     cards: List[CardResponse] = []
 

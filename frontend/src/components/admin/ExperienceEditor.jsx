@@ -147,6 +147,15 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
         </div>
       </header>
 
+      {experience.hug_count > 0 && (
+        <div className="editor-hug-banner glass-panel animate-enter" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem 1.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(201, 24, 74, 0.2)', border: '1.5px solid var(--gold-400)', color: '#fff' }}>
+          <Heart size={22} fill="#ff4d6d" color="#ff4d6d" />
+          <span>
+            <strong>¡Notificación de abrazo devuelto!</strong> <strong>{experience.recipient_name}</strong> recibió tu carta y te ha enviado <strong>{experience.hug_count} {experience.hug_count === 1 ? 'abrazo' : 'abrazos'} de vuelta ❤️</strong>
+          </span>
+        </div>
+      )}
+
       {/* Editor Content Area */}
       <main className="editor-content-grid">
         {/* Left Column: General Configuration */}

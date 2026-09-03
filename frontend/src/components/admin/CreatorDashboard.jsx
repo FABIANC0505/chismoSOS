@@ -129,6 +129,21 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         </button>
       </section>
 
+      {/* Hug Notifications Banner */}
+      {experiences.some(e => e.hug_count > 0) && (
+        <div className="hug-notification-banner glass-panel animate-enter" style={{ marginBottom: '2rem' }}>
+          <Heart size={24} fill="#ff4d6d" color="#ff4d6d" className="hug-banner-icon" />
+          <div className="hug-banner-text">
+            <h4 className="font-serif text-gold" style={{ fontSize: '1.1rem', marginBottom: '0.2rem' }}>
+              ¡Notificación de abrazo enviado/recibido! ❤️
+            </h4>
+            <p style={{ fontSize: '0.9rem', color: '#fff' }}>
+              {experiences.filter(e => e.hug_count > 0).map(e => e.recipient_name).join(', ')} ha(n) devuelto el abrazo para confirmarte que recibieron tu detalle de Amor y Amistad.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Experiences Grid */}
       <section className="dashboard-list-section">
         <h3 className="section-title font-serif">Tus Cartas Creadas ({experiences.length})</h3>
@@ -163,6 +178,15 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
 
               return (
                 <div key={exp.id} className="experience-card glass-panel" id={`exp-card-${exp.id}`}>
+                  {exp.hug_count > 0 && (
+                    <div className="card-hug-received-badge animate-enter">
+                      <Heart size={14} fill="#ff4d6d" color="#ff4d6d" />
+                      <span>
+                        ¡Abrazo enviado de vuelta por <strong>{exp.recipient_name}</strong>! ({exp.hug_count} {exp.hug_count === 1 ? 'recibido' : 'recibidos'})
+                      </span>
+                    </div>
+                  )}
+
                   <div className="card-top">
                     <span className="card-recipient-tag">
                       Para: <strong>{exp.recipient_name}</strong>
@@ -650,6 +674,31 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           margin-top: 1.5rem;
           padding-top: 1.25rem;
           border-top: 1px solid var(--glass-border);
+        }
+
+        .hug-notification-banner {
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+          padding: 1.25rem 1.75rem;
+          border-radius: var(--radius-lg);
+          background: linear-gradient(135deg, rgba(201, 24, 74, 0.25) 0%, rgba(35, 8, 14, 0.6) 100%), var(--glass-bg);
+          border: 1.5px solid var(--gold-400);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5), var(--shadow-gold-glow);
+        }
+
+        .card-hug-received-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 77, 109, 0.2);
+          border: 1.2px solid rgba(255, 77, 109, 0.5);
+          color: var(--rose-100);
+          padding: 0.4rem 0.85rem;
+          border-radius: var(--radius-full);
+          font-size: 0.8rem;
+          font-weight: 500;
+          margin-bottom: 0.25rem;
         }
       `}</style>
     </div>

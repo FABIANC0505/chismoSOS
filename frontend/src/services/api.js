@@ -9,7 +9,13 @@ export const API_BASE = BACKEND_BASE ? `${BACKEND_BASE}/api` : '/api';
  */
 export function getAssetUrl(path) {
   if (!path) return '';
-  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+  if (
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('data:') ||
+    path.startsWith('blob:') ||
+    path.startsWith('file://')
+  ) {
     return path;
   }
   return `${BACKEND_BASE}${path.startsWith('/') ? '' : '/'}${path}`;
@@ -189,6 +195,14 @@ export const api = {
   // --- PUBLIC RECIPIENT VIEW ---
   async getPublicExperience(slug) {
     const res = await fetch(`${API_BASE}/public/experience/${slug}`);
+    return await handleResponse(res);
+  },
+
+  async sendHug(slug) {
+    const res = await fetch(`${API_BASE}/public/experience/${slug}/hug`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
     return await handleResponse(res);
   }
 };

@@ -42,7 +42,9 @@ export default function PhotoCarousel({ experience, onReplay }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextCard, prevCard]);
 
-  const handleSendHeart = () => {
+  const [imgErrorMap, setImgErrorMap] = useState({});
+
+  const handleSendHeart = async () => {
     setHasSentHeart(true);
     setHeartCount(prev => prev + 1);
     confetti({
@@ -51,6 +53,17 @@ export default function PhotoCarousel({ experience, onReplay }) {
       origin: { y: 0.7 },
       colors: ['#ff4d6d', '#ff758f', '#c9184a', '#f4d188', '#ffffff']
     });
+
+    if (experience.slug) {
+      try {
+        const res = await api.sendHug(experience.slug);
+        if (res && res.hug_count) {
+          setHeartCount(res.hug_count);
+        }
+      } catch (err) {
+        console.warn("No se pudo enviar la notificación de abrazo al servidor:", err);
+      }
+    }
   };
 
   return (
@@ -92,13 +105,14 @@ export default function PhotoCarousel({ experience, onReplay }) {
         <div className="carousel-card glass-panel">
           {/* Card Image Area */}
           <div className="card-media-wrap">
-            {currentCard.image_url ? (
+            {currentCard.image_url && !imgErrorMap[currentIndex] ? (
               <div className="image-frame" onClick={() => setZoomedImage(getAssetUrl(currentCard.image_url))} role="button" tabIndex={0}>
                 <img
                   src={getAssetUrl(currentCard.image_url)}
                   alt={currentCard.title || "Fotografía de Amor y Amistad"}
                   className="card-image"
                   loading="lazy"
+                  onError={() => setImgErrorMap(prev => ({ ...prev, [currentIndex]: true }))}
                 />
                 <div className="image-overlay-glow" />
                 <button type="button" className="zoom-hint" title="Ver en pantalla completa">
@@ -165,6 +179,14 @@ export default function PhotoCarousel({ experience, onReplay }) {
             <p className="celebration-desc">
               Gracias por formar parte de los momentos más bonitos y por ser alguien tan especial en este día.
             </p>
+            {hasSentHeart && (
+              <div className="hug-sent-notification animate-enter">
+                <Check size={16} className="text-gold" />
+                <span>
+                  <strong>¡Notificación enviada!</strong> {experience.sender_name || 'El remitente'} ha sido notificado de que recibiste su detalle y le enviaste un abrazo de vuelta. ❤️
+                </span>
+              </div>
+            )}
             <div className="celebration-buttons">
               <button
                 type="button"
@@ -534,6 +556,20 @@ export default function PhotoCarousel({ experience, onReplay }) {
           color: var(--rose-100);
           font-size: 1rem;
           line-height: 1.5;
+        }
+
+        .hug-sent-notification {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+          background: rgba(244, 209, 136, 0.14);
+          border: 1.5px solid var(--gold-400);
+          color: #fff;
+          padding: 0.75rem 1.2rem;
+          border-radius: var(--radius-md);
+          font-size: 0.9rem;
+          text-align: left;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .celebration-buttons {
