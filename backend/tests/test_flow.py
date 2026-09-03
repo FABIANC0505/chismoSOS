@@ -76,9 +76,28 @@ def test_auth_and_experience_flow():
     pub_data = res.json()
     assert pub_data["recipient_name"] == "Valentina"
     assert len(pub_data["cards"]) == 2
+    assert pub_data["hug_count"] == 0
     print("[OK] Endpoint publico para el destinatario OK")
+
+    # 7. Recipient finishes reading and sends a hug
+    res = client.post(f"/api/public/experience/{slug}/hug")
+    assert res.status_code == 200
+    hug_res = res.json()
+    assert hug_res["hug_count"] == 1
+    assert "Abrazo" in hug_res["message"]
+    print("[OK] Envio de abrazo por el destinatario OK")
+
+    # 8. Sender checks their experiences and verifies hug notification
+    res = client.get("/api/experiences", headers=headers)
+    assert res.status_code == 200
+    sender_exps = res.json()
+    my_exp = next(e for e in sender_exps if e["id"] == exp_id)
+    assert my_exp["hug_count"] == 1
+    assert my_exp["last_hug_at"] is not None
+    print(f"[OK] Remitente recibe notificacion en su perfil de abrazo recibido (total: {my_exp['hug_count']}) OK")
 
 if __name__ == "__main__":
     test_health()
     test_auth_and_experience_flow()
-    print("\nTODOS LOS TESTS DEL BACKEND PASARON EXITOSAMENTE!")
+    print("\nTODOS LOS TESTS DEL BACKEND (INCLUYENDO ABRAZO RECIBIDO) PASARON EXITOSAMENTE!")
+

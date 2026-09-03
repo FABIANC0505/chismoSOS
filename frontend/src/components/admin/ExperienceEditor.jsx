@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api, getAssetUrl } from '../../services/api';
 import CardEditorModal from './CardEditorModal';
 import StepEditorModal from './StepEditorModal';
+import HugNotificationModal from './HugNotificationModal';
 import { 
   ArrowLeft, Eye, Share2, Plus, Edit2, Trash2, ArrowUp, ArrowDown, 
   Save, Sparkles, Heart, HelpCircle, Check, Copy, ExternalLink, Loader2 
@@ -13,6 +14,7 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
   const [savingGeneral, setSavingGeneral] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [showHugModal, setShowHugModal] = useState(false);
 
   // Form states
   const [title, setTitle] = useState('');
@@ -26,24 +28,30 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
   const [stepToEdit, setStepToEdit] = useState(null);
   const [isStepModalOpen, setIsStepModalOpen] = useState(false);
 
-  const fetchExperience = async () => {
+  const fetchExperience = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const data = await api.getExperience(experienceId);
       setExperience(data);
-      setTitle(data.title || '');
-      setRecipientName(data.recipient_name || '');
-      setSenderName(data.sender_name || '');
-      setEnvelopeNote(data.envelope_note || '');
+      if (!silent) {
+        setTitle(data.title || '');
+        setRecipientName(data.recipient_name || '');
+        setSenderName(data.sender_name || '');
+        setEnvelopeNote(data.envelope_note || '');
+      }
     } catch (err) {
-      alert(err.message || 'Error al cargar la experiencia.');
+      if (!silent) alert(err.message || 'Error al cargar la experiencia.');
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchExperience();
+    const interval = setInterval(() => {
+      fetchExperience(true);
+    }, 6000);
+    return () => clearInterval(interval);
   }, [experienceId]);
 
   const handleSaveGeneral = async (e) => {
@@ -128,9 +136,11 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
           {/* Campo con logo de Abrazos Recibidos */}
           <div 
             className={`hug-counter-badge ${experience.hug_count > 0 ? 'hug-active' : 'hug-empty'}`}
-            title={experience.hug_count > 0 ? `${experience.recipient_name} devolvió tu abrazo (${experience.hug_count} recibido)` : 'Aún no se han registrado abrazos devueltos'}
+            onClick={() => setShowHugModal(true)}
+            style={{ cursor: 'pointer' }}
+            title={experience.hug_count > 0 ? `${experience.recipient_name} devolvió tu abrazo (${experience.hug_count} recibido). Toca para ver confirmación de entrega.` : 'Aún no se han registrado abrazos devueltos'}
           >
-            <Heart size={15} fill={experience.hug_count > 0 ? "#ff4d6d" : "transparent"} color={experience.hug_count > 0 ? "#ff4d6d" : "rgba(255,255,255,0.5)"} />
+            <Heart size={15} fill={experience.hug_count > 0 ? "#ff4d6d" : "transparent"} color={experience.hug_count > 0 ? "#ff4d6d" : "rgba(255,255,255,0.5)"} className={experience.hug_count > 0 ? 'pulse-heart' : ''} />
             <span>Abrazos Recibidos: <strong>{experience.hug_count || 0}</strong></span>
           </div>
 
@@ -157,10 +167,15 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
       </header>
 
       {experience.hug_count > 0 && (
-        <div className="editor-hug-banner glass-panel animate-enter" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem 1.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(201, 24, 74, 0.2)', border: '1.5px solid var(--gold-400)', color: '#fff' }}>
-          <Heart size={22} fill="#ff4d6d" color="#ff4d6d" />
+        <div 
+          className="editor-hug-banner glass-panel animate-enter" 
+          style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem 1.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(201, 24, 74, 0.2)', border: '1.5px solid var(--gold-400)', color: '#fff', cursor: 'pointer' }}
+          onClick={() => setShowHugModal(true)}
+          title="Toca para ver el detalle de los abrazos recibidos"
+        >
+          <Heart size={22} fill="#ff4d6d" color="#ff4d6d" className="pulse-heart" />
           <span>
-            <strong>¡Notificación de abrazo devuelto!</strong> <strong>{experience.recipient_name}</strong> recibió tu carta y te ha enviado <strong>{experience.hug_count} {experience.hug_count === 1 ? 'abrazo' : 'abrazos'} de vuelta ❤️</strong>
+            <strong>¡Notificación de abrazo recibido!</strong> <strong>{experience.recipient_name}</strong> recibió tu carta y te ha enviado <strong>{experience.hug_count} {experience.hug_count === 1 ? 'abrazo' : 'abrazos'} de vuelta ❤️</strong> (Toca para ver confirmación)
           </span>
         </div>
       )}
@@ -415,6 +430,14 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
           onClose={() => setIsStepModalOpen(false)}
         />
       )}
+
+      {/* Hug Notification Modal */}
+      <HugNotificationModal
+        isOpen={showHugModal}
+        onClose={() => setShowHugModal(false)}
+        experiences={experience ? [experience] : []}
+        onLivePreview={onLivePreview}
+      />
 
       <style>{`
         .experience-editor-layout {

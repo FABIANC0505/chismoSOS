@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Heart, Sparkles, RefreshCw, ZoomIn, X, Share2, Award } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Sparkles, RefreshCw, ZoomIn, X, Share2, Award, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { getAssetUrl } from '../../services/api';
+import { api, getAssetUrl } from '../../services/api';
 
 export default function PhotoCarousel({ experience, onReplay }) {
   const cards = experience.cards || [];

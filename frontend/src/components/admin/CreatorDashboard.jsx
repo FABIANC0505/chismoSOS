@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../../services/api';
 import { 
   Plus, Heart, Share2, Edit3, Trash2, Eye, LogOut, Sparkles, 
-  Check, Calendar, Users, ExternalLink, Loader2 
+  Check, Calendar, Users, ExternalLink, Loader2, Bell 
 } from 'lucide-react';
+import HugNotificationModal from './HugNotificationModal';
 
 export default function CreatorDashboard({ user, onLogout, onSelectExperience, onLivePreview }) {
   const [experiences, setExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+
+  // Hug Notification Center State
+  const [showHugModal, setShowHugModal] = useState(false);
+  const [isHugCelebration, setIsHugCelebration] = useState(false);
+  const [liveHugToast, setLiveHugToast] = useState(null);
+  const prevHugsRef = useRef(null);
 
   // New Experience Modal state
   const [showNewModal, setShowNewModal] = useState(false);
@@ -23,6 +30,27 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
     try {
       if (!silent) setLoading(true);
       const list = await api.getMyExperiences();
+      
+      // Check for incoming hugs in real time
+      const currentTotal = list.reduce((acc, e) => acc + (e.hug_count || 0), 0);
+      if (prevHugsRef.current !== null && currentTotal > prevHugsRef.current) {
+        const latestExp = list.find(e => {
+          const prev = experiences.find(p => p.id === e.id);
+          return (e.hug_count || 0) > (prev?.hug_count || 0);
+        }) || list.find(e => (e.hug_count || 0) > 0);
+
+        if (latestExp) {
+          setLiveHugToast({
+            recipient: latestExp.recipient_name,
+            title: latestExp.title,
+            count: latestExp.hug_count
+          });
+          setIsHugCelebration(true);
+          setShowHugModal(true);
+        }
+      }
+      prevHugsRef.current = currentTotal;
+
       setExperiences(list);
     } catch (err) {
       console.error(err);
@@ -35,7 +63,7 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
     fetchExperiences();
     const interval = setInterval(() => {
       fetchExperiences(true);
-    }, 10000);
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -86,6 +114,8 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
     setTimeout(() => setCopiedId(null), 3000);
   };
 
+  const totalHugs = experiences.reduce((acc, e) => acc + (e.hug_count || 0), 0);
+
   return (
     <div className="dashboard-container animate-enter" id="creator-dashboard-screen">
       {/* Top Bar */}
@@ -99,6 +129,31 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         </div>
 
         <div className="user-profile-bar">
+          {/* Botón interactivo de Abrazos Recibidos en el Perfil */}
+          <button
+            type="button"
+            id="btn-profile-hugs"
+            className={`user-hugs-badge-btn ${totalHugs > 0 ? 'hugs-active' : 'hugs-empty'}`}
+            onClick={() => {
+              setIsHugCelebration(false);
+              setShowHugModal(true);
+            }}
+            title="Ver confirmaciones de entrega y abrazos recibidos"
+          >
+            <div className="hugs-badge-icon-box">
+              <Heart 
+                size={16} 
+                fill={totalHugs > 0 ? "#ff4d6d" : "transparent"} 
+                color={totalHugs > 0 ? "#ff4d6d" : "rgba(255,255,255,0.7)"} 
+                className={totalHugs > 0 ? 'pulse-heart' : ''} 
+              />
+            </div>
+            <span className="hugs-badge-text">
+              Abrazos: <strong>{totalHugs}</strong>
+            </span>
+            {totalHugs > 0 && <span className="hugs-dot-indicator" />}
+          </button>
+
           <span className="user-greeting">
             Hola, <strong>{user?.username}</strong>
           </span>
@@ -135,14 +190,29 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
 
       {/* Hug Notifications Banner */}
       {experiences.some(e => e.hug_count > 0) && (
-        <div className="hug-notification-banner glass-panel animate-enter" style={{ marginBottom: '2rem' }}>
-          <Heart size={24} fill="#ff4d6d" color="#ff4d6d" className="hug-banner-icon" />
+        <div 
+          className="hug-notification-banner glass-panel animate-enter" 
+          style={{ marginBottom: '2rem', cursor: 'pointer' }}
+          onClick={() => {
+            setIsHugCelebration(false);
+            setShowHugModal(true);
+          }}
+          title="Toca aquí para ver todos los detalles de los abrazos recibidos"
+          role="button"
+          tabIndex={0}
+        >
+          <div className="hug-banner-icon-wrap">
+            <Heart size={26} fill="#ff4d6d" color="#ff4d6d" className="hug-banner-icon pulse-heart" />
+          </div>
           <div className="hug-banner-text">
-            <h4 className="font-serif text-gold" style={{ fontSize: '1.1rem', marginBottom: '0.2rem' }}>
-              ¡Notificación de abrazo enviado/recibido! ❤️
-            </h4>
-            <p style={{ fontSize: '0.9rem', color: '#fff' }}>
-              {experiences.filter(e => e.hug_count > 0).map(e => e.recipient_name).join(', ')} ha(n) devuelto el abrazo para confirmarte que recibieron tu detalle de Amor y Amistad.
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+              <h4 className="font-serif text-gold" style={{ fontSize: '1.15rem', margin: 0 }}>
+                ¡Notificación de abrazo recibido! ❤️
+              </h4>
+              <span className="banner-click-hint">Toca para abrir detalle</span>
+            </div>
+            <p style={{ fontSize: '0.92rem', color: '#fff', margin: '0.35rem 0 0 0', lineHeight: 1.45 }}>
+              {experiences.filter(e => e.hug_count > 0).map(e => e.recipient_name).join(', ')} ha(n) recibido tu carta y te ha(n) enviado un abrazo de vuelta. ¡Tu detalle llegó con éxito a su destino!
             </p>
           </div>
         </div>
@@ -183,10 +253,18 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
               return (
                 <div key={exp.id} className="experience-card glass-panel" id={`exp-card-${exp.id}`}>
                   {exp.hug_count > 0 && (
-                    <div className="card-hug-received-badge animate-enter">
-                      <Heart size={14} fill="#ff4d6d" color="#ff4d6d" />
+                    <div 
+                      className="card-hug-received-badge animate-enter"
+                      onClick={() => {
+                        setIsHugCelebration(false);
+                        setShowHugModal(true);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                      title="Haz clic para ver el detalle del abrazo"
+                    >
+                      <Heart size={14} fill="#ff4d6d" color="#ff4d6d" className="pulse-heart" />
                       <span>
-                        ¡Abrazo enviado de vuelta por <strong>{exp.recipient_name}</strong>! ({exp.hug_count} {exp.hug_count === 1 ? 'recibido' : 'recibidos'})
+                        ¡Abrazo recibido de <strong>{exp.recipient_name}</strong>! ({exp.hug_count} {exp.hug_count === 1 ? 'recibido' : 'recibidos'})
                       </span>
                     </div>
                   )}
@@ -210,17 +288,25 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
                   </div>
 
                   {/* Campo con Logo de Abrazos Recibidos */}
-                  <div className="hugs-indicator-box">
+                  <div 
+                    className="hugs-indicator-box"
+                    onClick={() => {
+                      setIsHugCelebration(false);
+                      setShowHugModal(true);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    title={exp.hug_count > 0 ? "¡Toca para ver la confirmación del abrazo!" : "Esperando que el destinatario termine de leer la carta"}
+                  >
                     <div className={`hugs-field-badge ${exp.hug_count > 0 ? 'badge-active' : 'badge-empty'}`}>
                       <div className="hugs-icon-wrap">
-                        <Heart size={16} fill={exp.hug_count > 0 ? "#ff4d6d" : "transparent"} color={exp.hug_count > 0 ? "#ff4d6d" : "rgba(255,255,255,0.4)"} />
+                        <Heart size={16} fill={exp.hug_count > 0 ? "#ff4d6d" : "transparent"} color={exp.hug_count > 0 ? "#ff4d6d" : "rgba(255,255,255,0.4)"} className={exp.hug_count > 0 ? 'pulse-heart' : ''} />
                       </div>
                       <div className="hugs-field-info">
                         <span className="hugs-label">Abrazos Recibidos</span>
                         <span className="hugs-count-val">
                           {exp.hug_count > 0 ? (
                             <>
-                              <strong>{exp.hug_count}</strong> {exp.hug_count === 1 ? 'abrazo' : 'abrazos'} • <em>Detalle visto ❤️</em>
+                              <strong>{exp.hug_count}</strong> {exp.hug_count === 1 ? 'abrazo recibido' : 'abrazos recibidos'} • <em>¡Carta leída! ❤️</em>
                             </>
                           ) : (
                             'Esperando apertura del destinatario...'
@@ -378,6 +464,48 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         </div>
       )}
 
+      {/* Live Floating Toast if Hug Just Arrived */}
+      {liveHugToast && (
+        <div 
+          className="live-hug-toast glass-panel animate-enter"
+          onClick={() => {
+            setIsHugCelebration(true);
+            setShowHugModal(true);
+            setLiveHugToast(null);
+          }}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="toast-heart-box">
+            <Heart size={20} fill="#ff4d6d" color="#ff4d6d" className="pulse-heart" />
+          </div>
+          <div className="toast-content">
+            <strong className="text-gold">¡Abrazo recibido en directo! ❤️</strong>
+            <span>{liveHugToast.recipient} leyó tu carta y te envió un abrazo.</span>
+          </div>
+          <button 
+            type="button" 
+            className="toast-close-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLiveHugToast(null);
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      {/* Hug Notification Modal */}
+      <HugNotificationModal
+        isOpen={showHugModal}
+        onClose={() => setShowHugModal(false)}
+        experiences={experiences}
+        onLivePreview={onLivePreview}
+        onSelectExperience={onSelectExperience}
+        isCelebration={isHugCelebration}
+      />
+
       <style>{`
         .dashboard-container {
           max-width: 1200px;
@@ -394,6 +522,7 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           padding: 1rem 1.75rem;
           border-radius: var(--radius-lg);
           margin-bottom: 2.5rem;
+          gap: 1rem;
           background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), var(--glass-bg);
           backdrop-filter: blur(24px) saturate(160%);
           -webkit-backdrop-filter: blur(24px) saturate(160%);
@@ -404,11 +533,11 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         .brand-badge {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 0.85rem;
         }
 
         .brand-name {
-          font-size: 1.45rem;
+          font-size: 1.6rem;
           color: #fff;
           line-height: 1;
         }
@@ -424,6 +553,64 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           display: flex;
           align-items: center;
           gap: 1.25rem;
+        }
+
+        /* User Hugs Badge Button in Top Bar */
+        .user-hugs-badge-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.45rem 0.95rem;
+          border-radius: var(--radius-full);
+          background: rgba(255, 255, 255, 0.06);
+          border: 1.5px solid rgba(255, 255, 255, 0.18);
+          color: #fff;
+          font-size: 0.82rem;
+          cursor: pointer;
+          transition: var(--transition-smooth);
+          position: relative;
+        }
+
+        .user-hugs-badge-btn:hover {
+          background: rgba(255, 77, 109, 0.15);
+          border-color: var(--ruby-400);
+          transform: translateY(-1px);
+        }
+
+        .user-hugs-badge-btn.hugs-active {
+          background: linear-gradient(135deg, rgba(255, 77, 109, 0.22) 0%, rgba(201, 24, 74, 0.12) 100%);
+          border-color: var(--gold-400);
+          box-shadow: 0 0 15px rgba(255, 77, 109, 0.35);
+        }
+
+        .hugs-badge-icon-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .hugs-badge-text strong {
+          color: var(--gold-300);
+          font-size: 0.9rem;
+          margin-left: 0.15rem;
+        }
+
+        .hugs-dot-indicator {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #ff4d6d;
+          box-shadow: 0 0 8px #ff4d6d;
+          animation: pulse 1.5s infinite;
+        }
+
+        .pulse-heart {
+          animation: pulseHeart 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseHeart {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.15); }
         }
 
         .user-greeting {
@@ -451,6 +638,10 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           .dashboard-hero {
             flex-direction: column;
             align-items: flex-start;
+          }
+          .user-profile-bar {
+            flex-wrap: wrap;
+            gap: 0.6rem;
           }
         }
 
@@ -490,10 +681,15 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         }
 
         /* Section */
+        .dashboard-list-section {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
         .section-title {
-          font-size: 1.5rem;
+          font-size: 1.6rem;
           color: #fff;
-          margin-bottom: 1.5rem;
         }
 
         .experiences-grid {
@@ -710,6 +906,35 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           background: linear-gradient(135deg, rgba(201, 24, 74, 0.25) 0%, rgba(35, 8, 14, 0.6) 100%), var(--glass-bg);
           border: 1.5px solid var(--gold-400);
           box-shadow: 0 10px 30px rgba(0,0,0,0.5), var(--shadow-gold-glow);
+          transition: var(--transition-smooth);
+        }
+
+        .hug-notification-banner:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 15px 40px rgba(255, 77, 109, 0.3), var(--shadow-gold-glow);
+        }
+
+        .banner-click-hint {
+          background: rgba(223, 177, 91, 0.18);
+          border: 1px solid var(--gold-400);
+          color: var(--gold-300);
+          font-size: 0.72rem;
+          padding: 0.15rem 0.55rem;
+          border-radius: var(--radius-full);
+          text-transform: uppercase;
+          font-weight: 600;
+        }
+
+        .hug-banner-icon-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: rgba(255, 77, 109, 0.15);
+          border: 1px solid rgba(255, 77, 109, 0.4);
+          flex-shrink: 0;
         }
 
         .card-hug-received-badge {
@@ -724,6 +949,12 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           font-size: 0.8rem;
           font-weight: 500;
           margin-bottom: 0.25rem;
+          transition: var(--transition-smooth);
+        }
+
+        .card-hug-received-badge:hover {
+          background: rgba(255, 77, 109, 0.35);
+          transform: scale(1.02);
         }
 
         .hugs-indicator-box {
@@ -743,6 +974,11 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           background: linear-gradient(135deg, rgba(255, 77, 109, 0.18) 0%, rgba(201, 24, 74, 0.08) 100%);
           border: 1.2px solid var(--ruby-400);
           box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .hugs-field-badge.badge-active:hover {
+          background: linear-gradient(135deg, rgba(255, 77, 109, 0.28) 0%, rgba(201, 24, 74, 0.16) 100%);
+          transform: translateY(-2px);
         }
 
         .hugs-field-badge.badge-empty {
@@ -779,6 +1015,52 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
         .hugs-count-val {
           font-size: 0.84rem;
           color: var(--rose-100);
+        }
+
+        /* Live Hug Toast */
+        .live-hug-toast {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          padding: 1rem 1.25rem;
+          border-radius: var(--radius-md);
+          background: linear-gradient(135deg, rgba(201, 24, 74, 0.95) 0%, rgba(35, 8, 14, 0.95) 100%);
+          border: 1.5px solid var(--gold-400);
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 77, 109, 0.4);
+          cursor: pointer;
+          max-width: 380px;
+        }
+
+        .toast-heart-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .toast-content {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+          font-size: 0.85rem;
+          color: #fff;
+        }
+
+        .toast-close-btn {
+          background: transparent;
+          border: none;
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 1.2rem;
+          cursor: pointer;
+          padding: 0 0.25rem;
+          margin-left: auto;
+        }
+
+        .toast-close-btn:hover {
+          color: #fff;
         }
       `}</style>
     </div>
