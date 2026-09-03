@@ -205,6 +205,27 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
                     </span>
                   </div>
 
+                  {/* Campo con Logo de Abrazos Recibidos */}
+                  <div className="hugs-indicator-box">
+                    <div className={`hugs-field-badge ${exp.hug_count > 0 ? 'badge-active' : 'badge-empty'}`}>
+                      <div className="hugs-icon-wrap">
+                        <Heart size={16} fill={exp.hug_count > 0 ? "#ff4d6d" : "transparent"} color={exp.hug_count > 0 ? "#ff4d6d" : "rgba(255,255,255,0.4)"} />
+                      </div>
+                      <div className="hugs-field-info">
+                        <span className="hugs-label">Abrazos Recibidos</span>
+                        <span className="hugs-count-val">
+                          {exp.hug_count > 0 ? (
+                            <>
+                              <strong>{exp.hug_count}</strong> {exp.hug_count === 1 ? 'abrazo' : 'abrazos'} • <em>Detalle visto ❤️</em>
+                            </>
+                          ) : (
+                            'Esperando apertura del destinatario...'
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                   <p className="card-note-preview">
                     "{exp.envelope_note || 'Sin nota de sobre'}"
                   </p>
@@ -699,6 +720,61 @@ export default function CreatorDashboard({ user, onLogout, onSelectExperience, o
           font-size: 0.8rem;
           font-weight: 500;
           margin-bottom: 0.25rem;
+        }
+
+        .hugs-indicator-box {
+          margin: 0.25rem 0;
+        }
+
+        .hugs-field-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.65rem 0.9rem;
+          border-radius: var(--radius-md);
+          transition: var(--transition-smooth);
+        }
+
+        .hugs-field-badge.badge-active {
+          background: linear-gradient(135deg, rgba(255, 77, 109, 0.18) 0%, rgba(201, 24, 74, 0.08) 100%);
+          border: 1.2px solid var(--ruby-400);
+          box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .hugs-field-badge.badge-empty {
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+
+        .hugs-icon-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          flex-shrink: 0;
+        }
+
+        .hugs-field-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.1rem;
+        }
+
+        .hugs-label {
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--gold-300);
+          font-weight: 600;
+        }
+
+        .hugs-count-val {
+          font-size: 0.84rem;
+          color: var(--rose-100);
         }
       `}</style>
     </div>

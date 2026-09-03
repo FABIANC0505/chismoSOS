@@ -125,6 +125,15 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
         </div>
 
         <div className="navbar-right">
+          {/* Campo con logo de Abrazos Recibidos */}
+          <div 
+            className={`hug-counter-badge ${experience.hug_count > 0 ? 'hug-active' : 'hug-empty'}`}
+            title={experience.hug_count > 0 ? `${experience.recipient_name} devolvió tu abrazo (${experience.hug_count} recibido)` : 'Aún no se han registrado abrazos devueltos'}
+          >
+            <Heart size={15} fill={experience.hug_count > 0 ? "#ff4d6d" : "transparent"} color={experience.hug_count > 0 ? "#ff4d6d" : "rgba(255,255,255,0.5)"} />
+            <span>Abrazos Recibidos: <strong>{experience.hug_count || 0}</strong></span>
+          </div>
+
           <button
             type="button"
             className="btn-gold btn-sm"
@@ -745,6 +754,29 @@ export default function ExperienceEditor({ experienceId, onBack, onLivePreview }
           justify-content: center;
           gap: 1rem;
           color: var(--rose-200);
+        }
+
+        .hug-counter-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.35rem 0.85rem;
+          border-radius: var(--radius-full);
+          font-size: 0.82rem;
+          transition: var(--transition-smooth);
+        }
+
+        .hug-counter-badge.hug-active {
+          background: rgba(255, 77, 109, 0.18);
+          border: 1.2px solid var(--ruby-400);
+          color: var(--rose-100);
+          box-shadow: 0 0 12px rgba(255, 77, 109, 0.3);
+        }
+
+        .hug-counter-badge.hug-empty {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px dashed rgba(255, 255, 255, 0.2);
+          color: var(--text-muted);
         }
       `}</style>
     </div>
