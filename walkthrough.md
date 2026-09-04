@@ -89,6 +89,8 @@ chismoSOS/
 │   │   │       ├── ExperienceEditor.jsx # Editor de detalles y carrusel
 │   │   │       ├── CardEditorModal.jsx  # Subida de imagen y validador de 250 palabras
 │   │   │       └── StepEditorModal.jsx  # Editor de preguntas interactivas
+│   │   │   ├── MobileNavbar.jsx      # Barra de navegación móvil con botón fijo en extrema izquierda
+│   │   │   └── RetractableFooter.jsx # Pie de página retráctil con datos de autoría
 │   │   ├── services/
 │   │   │   └── api.js                # Cliente de conexión API
 │   │   ├── index.css                 # Sistema de diseño y variables CSS
@@ -99,7 +101,15 @@ chismoSOS/
 
 ---
 
-## 4. Cómo Ejecutar el Proyecto Localmente
+## 4. Mejoras Recientes: Navbar Móvil Plegable con Botón Fijado
+
+- **Botón Fijado en la Extrema Izquierda**: Anclado en `left: 0; top: 18px` como una pestaña de lujo en cristal vino y ribete de oro champán, con pulso de corazón animado y texto *"Menú"*.
+- **Despliegue y Recogida Fluida**: El menú se recoge hacia el extremo izquierdo (`transform: translateX(-105%)`) y se despliega suavemente mostrando todas las acciones clave (*"Ingresar / Registrarse"*, *"Ver Carta Demo"* o *"Mi Panel de Cartas"*), insignia conmemorativa y atajos.
+- **Limpieza Visual en Móvil**: La cabecera superior móvil ahora es una insignia central elegante sin botones amontonados ni desbordamientos horizontales.
+
+---
+
+## 5. Cómo Ejecutar el Proyecto Localmente
 
 ### Backend (Python):
 ```powershell
@@ -116,3 +126,4 @@ npm run dev
 ```
 *Aplicación disponible en:* `http://localhost:5173`
 *(Si se comparte un enlace a un destinatario, se accede automáticamente mediante `http://localhost:5173/?slug=[identificador]`)*
+

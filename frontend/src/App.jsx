@@ -6,7 +6,8 @@ import CreatorDashboard from './components/admin/CreatorDashboard';
 import ExperienceEditor from './components/admin/ExperienceEditor';
 import AuthModal from './components/admin/AuthModal';
 import RetractableFooter from './components/RetractableFooter';
-import { Heart, Sparkles, Send, Play, Lock, ShieldCheck, ChevronRight, Gift, LogOut } from 'lucide-react';
+import MobileNavbar from './components/MobileNavbar';
+import { Heart, Sparkles, Send, Play, Lock, ShieldCheck, ChevronRight, Gift, LogOut, Menu } from 'lucide-react';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(api.getCurrentUser());
@@ -15,6 +16,7 @@ export default function App() {
   const [selectedExperienceId, setSelectedExperienceId] = useState(null);
   const [previewData, setPreviewData] = useState(null);
   const [urlSlug, setUrlSlug] = useState(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   // Check if URL has ?slug=...
   useEffect(() => {
@@ -143,8 +145,29 @@ export default function App() {
       {/* 5. LANDING SCREEN (WHEN NOT LOGGED IN) */}
       {activeView === 'landing' && (
         <div className="landing-layout animate-enter">
-          {/* Top Bar */}
-          <nav className="landing-nav glass-panel">
+          {/* Mobile Collapsible Navbar with fixed left trigger */}
+          <MobileNavbar
+            isOpen={isMobileNavOpen}
+            onToggle={() => setIsMobileNavOpen(!isMobileNavOpen)}
+            onClose={() => setIsMobileNavOpen(false)}
+            currentUser={currentUser}
+            onStartDemo={handleStartDemo}
+            onOpenAuth={() => setIsAuthOpen(true)}
+            onGoDashboard={() => setActiveView('dashboard')}
+            onLogout={handleLogout}
+          />
+
+          {/* Mobile Top Brand Bar (Centered luxury insignia) */}
+          <div className="landing-mobile-brand-wrapper">
+            <div className="landing-mobile-brand-pill glass-panel">
+              <Heart size={20} fill="#ff4d6d" color="#ff4d6d" />
+              <span className="brand-title font-serif">chismOSOS</span>
+              <Sparkles size={14} className="text-gold" />
+            </div>
+          </div>
+
+          {/* Desktop Top Bar */}
+          <nav className="landing-nav landing-nav-desktop glass-panel">
             <div className="nav-brand">
               <Heart size={26} fill="#ff4d6d" color="#ff4d6d" />
               <span className="brand-title font-serif">chismOSOS</span>
@@ -297,6 +320,7 @@ export default function App() {
           z-index: 1;
         }
 
+        /* Desktop Top Bar */
         .landing-nav {
           display: flex;
           align-items: center;
@@ -309,6 +333,28 @@ export default function App() {
           border: 1.5px solid var(--glass-border);
           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35);
           margin-bottom: 3.5rem;
+        }
+
+        /* Mobile Top Brand Bar (Centered luxury insignia) */
+        .landing-mobile-brand-wrapper {
+          display: none;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 2.5rem;
+          width: 100%;
+        }
+
+        .landing-mobile-brand-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.5rem 1.35rem;
+          border-radius: var(--radius-full);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(35, 8, 14, 0.85);
+          backdrop-filter: blur(20px) saturate(160%);
+          -webkit-backdrop-filter: blur(20px) saturate(160%);
+          border: 1.5px solid var(--glass-border);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.28);
         }
 
         .nav-brand {
@@ -398,12 +444,6 @@ export default function App() {
           text-align: left;
         }
 
-        @media (max-width: 820px) {
-          .features-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
         .feature-card {
           border-radius: var(--radius-lg);
           padding: 2.25rem 1.75rem;
@@ -448,6 +488,74 @@ export default function App() {
 
         .text-gold {
           color: var(--gold-300);
+        }
+
+        /* REGLAS RESPONSIVAS PARA DISPOSITIVOS MÓVILES */
+        @media (max-width: 860px) {
+          .landing-nav-desktop {
+            display: none !important;
+          }
+
+          .landing-mobile-brand-wrapper {
+            display: flex;
+          }
+
+          .landing-layout {
+            padding: 1.25rem 1rem 4rem;
+          }
+
+          .landing-hero {
+            gap: 1.25rem;
+          }
+
+          .hero-tag {
+            font-size: 0.74rem;
+            padding: 0.35rem 0.9rem;
+          }
+
+          .hero-heading {
+            font-size: clamp(2rem, 7.5vw, 2.75rem);
+            line-height: 1.2;
+          }
+
+          .hero-description {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            padding: 0 0.5rem;
+          }
+
+          .hero-cta-group {
+            width: 100%;
+            max-width: 380px;
+            flex-direction: column;
+            gap: 0.85rem;
+          }
+
+          .cta-main, .cta-secondary {
+            width: 100%;
+            justify-content: center;
+            font-size: 0.98rem;
+            padding: 0.88rem 1.4rem;
+          }
+
+          .features-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-top: 2.75rem;
+          }
+
+          .feature-card {
+            padding: 1.6rem 1.35rem;
+            gap: 0.75rem;
+          }
+
+          .feature-title {
+            font-size: 1.18rem;
+          }
+
+          .feature-desc {
+            font-size: 0.9rem;
+          }
         }
       `}</style>
     </div>
